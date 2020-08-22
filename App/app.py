@@ -27,16 +27,20 @@
 """
 
 
-
-
-import req
 import config as cf
+import req
 import sys
 import csv
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
 from time import process_time
+
+movies_folder = "theMoviesdb/"
+details_csv_name = movies_folder + "SmallMoviesDetailsCleaned.csv"
+casting_csv_name = movies_folder + "MoviesCastingRaw-small.csv"
+
+
 def loadCSVFile(file, sep=";"):
     """
     Carga un archivo csv a una lista
@@ -64,7 +68,7 @@ def loadCSVFile(file, sep=";"):
     except:
         print("Hubo un error con la carga del archivo")
     t1_stop = process_time()  # tiempo final
-    print("Tiempo de ejecución ", t1_stop-t1_start, " segundos")
+    print("Tiempo de ejecución ", t1_stop - t1_start, " segundos")
     return lst
 
 
@@ -77,6 +81,7 @@ def printMenu():
     print("2- Contar los elementos de la Lista")
     print("3- Contar elementos filtrados por palabra clave")
     print("4- Consultar elementos a partir de dos listas")
+    print("7-Para conocer a un director")
     print("0- Salir")
 
 
@@ -94,7 +99,7 @@ def countElementsFilteredByColumn(criteria, column, lst):
         counter :: int
             la cantidad de veces ue aparece un elemento con el criterio definido
     """
-    if lst['size'] == 0:
+    if lst["size"] == 0:
         print("La lista esta vacía")
         return 0
     else:
@@ -107,7 +112,7 @@ def countElementsFilteredByColumn(criteria, column, lst):
             if criteria.lower() in element[column].lower():
                 counter += 1
         t1_stop = process_time()  # tiempo final
-        print("Tiempo de ejecución ", t1_stop-t1_start, " segundos")
+        print("Tiempo de ejecución ", t1_stop - t1_start, " segundos")
     return counter
 
 
@@ -133,41 +138,58 @@ def main():
     Args: None
     Return: None 
     """
-    lista = lt.newList()   # se require usar lista definida
+    lista_details = lt.newList()  # se require usar lista definida
+    lista_casting = lt.newList()
     while True:
         printMenu()  # imprimir el menu de opciones en consola
         # leer opción ingresada
-        inputs = input('Seleccione una opción para continuar\n')
+        inputs = input("Seleccione una opción para continuar\n")
         if len(inputs) > 0:
             if int(inputs[0]) == 1:  # opcion 1
                 # llamar funcion cargar datos
-                lista = loadCSVFile("Data/test.csv")
-                print("Datos cargados, ", lista['size'], " elementos cargados")
+                lista_details = loadCSVFile("Data/" + details_csv_name)
+                print("Datos cargados, ", lista_details["size"], " elementos cargados")
+                lista_casting = loadCSVFile("Data/" + casting_csv_name)
+                print("Datos cargados, ", lista_casting["size"], " elementos cargados")
             elif int(inputs[0]) == 2:  # opcion 2
                 # obtener la longitud de la lista
-                if lista == None or lista['size'] == 0:
+                if lista_details == None or lista_details["size"] == 0:
                     print("La lista esta vacía")
                 else:
-                    print("La lista tiene ", lista['size'], " elementos")
+                    print("La lista tiene ", lista_details["size"], " elementos")
             elif int(inputs[0]) == 3:  # opcion 3
                 # obtener la longitud de la lista
-                if lista == None or lista['size'] == 0:
+                if lista_details == None or lista_details["size"] == 0:
                     print("La lista esta vacía")
                 else:
-                    criteria = input('Ingrese el criterio de búsqueda\n')
+                    criteria = input("Ingrese el criterio de búsqueda\n")
                     counter = countElementsFilteredByColumn(
-                        criteria, "nombre", lista)  # filtrar una columna por criterio
-                    print("Coinciden ", counter,
-                          " elementos con el crtierio: ", criteria)
+                        criteria, "nombre", lista_details
+                    )  # filtrar una columna por criterio
+                    print(
+                        "Coinciden ", counter, " elementos con el crtierio: ", criteria
+                    )
             elif int(inputs[0]) == 4:  # opcion 4
                 # obtener la longitud de la lista
-                if lista == None or lista['size'] == 0:
+                if lista_details == None or lista_details["size"] == 0:
                     print("La lista esta vacía")
                 else:
-                    criteria = input('Ingrese el criterio de búsqueda\n')
-                    counter = countElementsByCriteria(criteria, 0, lista)
-                    print("Coinciden ", counter, " elementos con el crtierio: '",
-                          criteria, "' (en construcción ...)")
+                    criteria = input("Ingrese el criterio de búsqueda\n")
+                    counter = countElementsByCriteria(criteria, 0, lista_details)
+                    print(
+                        "Coinciden ",
+                        counter,
+                        " elementos con el crtierio: '",
+                        criteria,
+                        "' (en construcción ...)",
+                    )
+            elif int(inputs[0]) == 7:  # opcion 5 reto 4
+                director = input("Ingrese el nombre del director\n")
+                for id in req.forward_travel(lista_casting, "id"):
+                    print(id)
+                information = req.conocer_director(
+                    lista_details, lista_casting, director
+                )
             elif int(inputs[0]) == 0:  # opcion 0, salir
                 sys.exit(0)
 
