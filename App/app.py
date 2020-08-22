@@ -41,7 +41,7 @@ details_csv_name = movies_folder + "SmallMoviesDetailsCleaned.csv"
 casting_csv_name = movies_folder + "MoviesCastingRaw-small.csv"
 
 
-def loadCSVFile(file, sep=";"):
+def loadCSVFile(file, sep=";", impl="SINGLE_LINKED"):
     """
     Carga un archivo csv a una lista
     Args:
@@ -55,7 +55,7 @@ def loadCSVFile(file, sep=";"):
     Returns: None  
     """
     # lst = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
-    lst = lt.newList()  # Usando implementacion linkedlist
+    lst = lt.newList(impl)  # Usando implementacion linkedlist
     print("Cargando archivo ....")
     t1_start = process_time()  # tiempo inicial
     dialect = csv.excel()
