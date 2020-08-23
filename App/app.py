@@ -30,46 +30,15 @@
 import config as cf
 import req
 import sys
-import csv
+import helper
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
-from time import process_time
+
 
 movies_folder = "theMoviesdb/"
 details_csv_name = movies_folder + "SmallMoviesDetailsCleaned.csv"
 casting_csv_name = movies_folder + "MoviesCastingRaw-small.csv"
-
-
-def loadCSVFile(file, sep=";", impl="SINGLE_LINKED"):
-    """
-    Carga un archivo csv a una lista
-    Args:
-        file
-            Archivo csv del cual se importaran los datos
-        sep = ";"
-            Separador utilizado para determinar cada objeto dentro del archivo
-        Try:
-        Intenta cargar el archivo CSV a la lista que se le pasa por parametro, si encuentra algun error
-        Borra la lista e informa al usuario
-    Returns: None  
-    """
-    # lst = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
-    lst = lt.newList(impl)  # Usando implementacion linkedlist
-    print("Cargando archivo ....")
-    t1_start = process_time()  # tiempo inicial
-    dialect = csv.excel()
-    dialect.delimiter = sep
-    try:
-        with open(file, encoding="utf-8") as csvfile:
-            spamreader = csv.DictReader(csvfile, dialect=dialect)
-            for row in spamreader:
-                lt.addLast(lst, row)
-    except:
-        print("Hubo un error con la carga del archivo")
-    t1_stop = process_time()  # tiempo final
-    print("Tiempo de ejecución ", t1_stop - t1_start, " segundos")
-    return lst
 
 
 def printMenu():
@@ -147,9 +116,9 @@ def main():
         if len(inputs) > 0:
             if int(inputs[0]) == 1:  # opcion 1
                 # llamar funcion cargar datos
-                lista_details = loadCSVFile("Data/" + details_csv_name)
+                lista_details = helper.loadCSVFile("Data/" + details_csv_name)
                 print("Datos cargados, ", lista_details["size"], " elementos cargados")
-                lista_casting = loadCSVFile("Data/" + casting_csv_name)
+                lista_casting = helper.loadCSVFile("Data/" + casting_csv_name)
                 print("Datos cargados, ", lista_casting["size"], " elementos cargados")
             elif int(inputs[0]) == 2:  # opcion 2
                 # obtener la longitud de la lista
@@ -185,11 +154,19 @@ def main():
                     )
             elif int(inputs[0]) == 7:  # opcion 5 reto 4
                 director = input("Ingrese el nombre del director\n")
-                for id in req.forward_travel(lista_casting, "id"):
-                    print(id)
                 information = req.conocer_director(
                     lista_details, lista_casting, director
                 )
+                for d in information:
+                    print(
+                        "id:",
+                        d["id"],
+                        " - " "title:",
+                        d["title"],
+                        " - ",
+                        "vote average:",
+                        d["vote_average"],
+                    )
             elif int(inputs[0]) == 0:  # opcion 0, salir
                 sys.exit(0)
 

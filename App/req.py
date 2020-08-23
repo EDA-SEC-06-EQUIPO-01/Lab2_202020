@@ -1,22 +1,26 @@
 import config as cf
+import helper as h
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
 
 
 def conocer_director(details, casting, director_name) -> dict:
-    pass
 
+    lst = [
+        node["id"]
+        for node in h.forward_travel(casting)
+        if node["director_name"] == director_name
+    ]
 
-# funcion de utilidad para viajar por la lista
-def forward_travel(lista, parameter=None):
+    info = []
+    for node in h.forward_travel(details):
+        if node["id"] in lst:
+            d = {
+                "id": node["id"],
+                "title": node["title"],
+                "vote_average": node["vote_average"],
+            }
+            info.append(d)
 
-    iter = it.newIterator(lista)
-
-    while it.hasNext(iter):
-        node = it.next(iter)
-
-        if parameter:
-            yield node[parameter]
-        else:
-            yield node
+    return info
