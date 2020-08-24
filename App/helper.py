@@ -1,3 +1,4 @@
+from types import FunctionType
 import config
 import csv
 from time import process_time
@@ -52,8 +53,19 @@ def forward_travel(lista, parameter=None):
             yield node
 
 
+def timer(func):
+    def inner(*args, **kwargs):
+        t1 = process_time()
+        ret = func(*args, **kwargs)
+        t2 = process_time()
+        print(
+            f"El tiempo que tardó la funcion {func.__name__} fue de {t2 - t1} segundos.")
+        return ret
+    return inner
+
+
 def less(element1, element2):
-    if int(element1["id"]) < int(element2["id"]):
+    if element1["imdb_id"] < element2["imdb_id"]:
         return True
     return False
 
