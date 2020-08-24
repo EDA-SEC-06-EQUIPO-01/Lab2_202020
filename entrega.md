@@ -4,11 +4,11 @@ Se utilizaron los archivos *small.csv para las pruebas.
 
 | Fuente de Datos 	  	 | ArrayList | LinkedList  |
 |--------------------|-----------|-------------|
-| Películas 	  	       | 0.0625    | 0.046875    |
-| Elenco 	  	          | 0.03125   | 0.03125     |
-| SelectionSort 	  	   | 9.875     | 1082.015625 |
-| InsertionSort 	 	    | 9.875     | 1233.21875  |
-| ShellSort 	 	        | 0.34375   | 35.203125   |
+| Películas 	  	       | 0.0625 's    | 0.046875 's   |
+| Elenco 	  	          | 0.03125 's   | 0.03125 's    |
+| SelectionSort 	  	   | 9.875 's    | 1082.015625 's |
+| InsertionSort 	 	    | 9.875 's    | 1233.21875 's |
+| ShellSort 	 	        | 0.34375 's  | 35.203125 's  |
 
 ## Preguntas.
 -	¿Qué diferencias se observan en desempeño de la carga de datos entre arreglo (Arraylist) y lista sencillamente encadenada (Singlelinkedlist)?
