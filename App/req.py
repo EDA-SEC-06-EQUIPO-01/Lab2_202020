@@ -3,9 +3,6 @@ import helper as h
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
-from Sorting import shellsort as sort
-from Sorting import insertionsort as sort
-
 
 @h.timer
 def conocer_director(details, casting, director_name) -> dict:
@@ -43,4 +40,3 @@ def crear_ranking(details, x=10, ascendent=True) -> tuple:
     rank_av.sort(key=mov_avera, reverse=ascendent)
     
     return (rank_co[:x], rank_av[:x])
-

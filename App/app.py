@@ -49,6 +49,7 @@ def printMenu():
     print("2- Contar los elementos de la Lista")
     print("3- Contar elementos filtrados por palabra clave")
     print("4- Consultar elementos a partir de dos listas")
+    print("5- Ordenar elementos por palabra clave")
     print("6- Crear un ranking")
     print("7- Conocer a un director")
     print("0- Salir")
@@ -98,15 +99,34 @@ def countElementsByCriteria(criteria, column, lst):
         iterator = it.newIterator(lst)
         while it.hasNext(iterator):
             el = it.next(iterator)
-            
-    return 0
+            if criteria.lower() in el[column].lower():
+                cont += 1
+        t2 = process_time()
+        print(f"Tiempo de ejecución {t2-t1} segundos")
+    return cont
 
 
-def orderElementsByCriteria(function, column, lst, elements):
+def orderElementsByCriteria(criteria, column, lst, elements):
     """
     Retorna una lista con cierta cantidad de elementos ordenados por el criterio
     """
-    return 0
+    r_list = lt.newList()
+    if lst["size"] == 0:
+        print("La lista está vacía")
+        return 0
+    else:
+        t1 = process_time()
+        cont = 0
+        iterator = it.newIterator(lst)
+        while it.hasNext(iterator):
+            el = it.next(iterator)
+            if criteria.lower() in el[column].lower():
+                lt.addLast(r_list, el)
+                cont += 1
+            if cont == elements:
+                return r_list
+        return r_list
+    
 
 
 def main():
@@ -165,10 +185,18 @@ def main():
                         "Coinciden ",
                         counter,
                         " elementos con el crtierio: '",
-                        criteria,
-                        "' (en construcción ...)",
+                        criteria
                     )
-            elif int(inputs[0]) == 6:
+            elif int(inputs[0]) == 5:
+                if lista_details == None or lista_details["size"] == 0:
+                    print("La lista está vacía")
+                else:
+                    criteria = input("Ingrese el criterio de búsqueda\n")
+                    num_el = int(input("Ingrese el número de elementos de la sublista:\n"))
+                    subl = orderElementsByCriteria(criteria, 0, lista_details, num_el)
+                    print(f"Se obtuvo una sublista de {lt.size(subl)} elementos:\n")
+                    print(subl)
+            elif int(inputs[0]) == 6: # requisito 2
                 asc = bool(int(input('Digite:\n' +
                                      '1 si desea se muestren las peliculas mejor calificadas\n' +
                                      '0 si desea que se muestren las peor calificadas\n')))
